@@ -2,7 +2,6 @@
 
 import { generateText, Output } from "ai";
 import { ticketBank } from "./tickets";
-import { openai } from "@ai-sdk/openai";
 import {
   JudgeTicketInput,
   judgeTicketInputSchema,
@@ -23,7 +22,7 @@ export async function judgeTicket(input: JudgeTicketInput) {
   }
 
   const result = await generateText({
-    model: openai("gpt-5.4-mini"),
+    model: "gpt-5.4-mini",
     output: Output.object({
       schema: judgeTicketOutputSchema,
     }),

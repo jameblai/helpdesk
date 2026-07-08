@@ -10,7 +10,6 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@ai-sdk/openai": "^4.0.9",
     "@base-ui/react": "^1.6.0",
     "@tabler/icons-react": "^3.44.0",
     "ai": "^7.0.18",
