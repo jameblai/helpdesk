@@ -27,7 +27,21 @@ export async function judgeTicket(input: JudgeTicketInput) {
     output: Output.object({
       schema: judgeTicketOutputSchema,
     }),
-    prompt: `Judge whether the following ticket is resolved: ${ticket.body}\n\nAnswer: ${answer}`,
+    prompt: `You are grading a helpdesk answer against a canonical answer.
+
+Question:
+${ticket.question}
+
+Canonical answer:
+${ticket.expectedAnswer}
+
+Submitted answer:
+${answer}
+
+Return passed=true only when the submitted answer is semantically equivalent to the canonical answer for this question.
+Accept paraphrases, casing differences, minor spelling mistakes, and extra polite wording.
+Reject answers that name the wrong place, code meaning, permission status, action, or yes/no value.
+Feedback must be one short sentence for the player.`,
   });
 
   return result.output;

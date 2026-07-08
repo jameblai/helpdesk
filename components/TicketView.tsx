@@ -24,7 +24,7 @@ export function TicketView({ ticket }: { ticket: Ticket }) {
         </div>
 
         <p className="bg-primary text-primary-foreground max-w-2xl self-start border px-2.5 py-2 text-sm">
-          {ticket.body}
+          {ticket.question}
         </p>
 
         {ticket.answer && (

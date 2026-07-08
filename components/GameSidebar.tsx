@@ -30,7 +30,10 @@ const OpenTicketMenuItem = memo(function OpenTicketMenuItem({
     <SidebarMenuItem>
       <SidebarMenuButton
         render={
-          <Link href={`/${ticket.id}`} className="flex items-center gap-4">
+          <Link
+            href={`/${ticket.id}`}
+            className="flex w-full items-center justify-between gap-4"
+          >
             <span className="truncate">{ticket.subject}</span>
             <TicketCountdown ticket={ticket} showText={false} size={16} />
           </Link>
@@ -52,7 +55,10 @@ const ClosedTicketMenuItem = memo(function ClosedTicketMenuItem({
     <SidebarMenuItem>
       <SidebarMenuButton
         render={
-          <Link href={`/${ticket.id}`} className="flex items-center gap-4">
+          <Link
+            href={`/${ticket.id}`}
+            className="flex w-full items-center justify-between gap-4"
+          >
             <span className="truncate">{ticket.subject}</span>
           </Link>
         }
