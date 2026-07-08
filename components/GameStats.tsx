@@ -27,7 +27,7 @@ export function GameStats() {
   const startedAt = useGame((state) => state.startedAt);
 
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
       <StatCard label="Open tickets" value={stats.openTickets} />
       <StatCard label="Successful tickets" value={stats.successfulTickets} />
       <StatCard label="Failed tickets" value={stats.failedTickets} />
