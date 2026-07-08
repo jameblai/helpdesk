@@ -1,6 +1,6 @@
 allowBuilds:
-  sharp: set this to true or false
-  unrs-resolver: set this to true or false
+  sharp: true
+  unrs-resolver: true
 minimumReleaseAgeExclude:
   - "@ai-sdk/gateway@4.0.14"
   - "@ai-sdk/openai@4.0.9"
