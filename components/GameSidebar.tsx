@@ -121,34 +121,38 @@ export function GameSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        <SidebarGroup>
-          <SidebarGroupLabel>Open tickets</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {openTicketIds.map((ticketId) => (
-                <OpenTicketMenuItem
-                  key={ticketId}
-                  ticketId={ticketId}
-                  isActive={pathname === `/${ticketId}`}
-                />
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-        <SidebarGroup>
-          <SidebarGroupLabel>Closed tickets</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {closedTicketIds.map((ticketId) => (
-                <ClosedTicketMenuItem
-                  key={ticketId}
-                  ticketId={ticketId}
-                  isActive={pathname === `/${ticketId}`}
-                />
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        {openTicketIds.length > 0 && (
+          <SidebarGroup>
+            <SidebarGroupLabel>Open tickets</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {openTicketIds.map((ticketId) => (
+                  <OpenTicketMenuItem
+                    key={ticketId}
+                    ticketId={ticketId}
+                    isActive={pathname === `/${ticketId}`}
+                  />
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
+        {closedTicketIds.length > 0 && (
+          <SidebarGroup>
+            <SidebarGroupLabel>Closed tickets</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {closedTicketIds.map((ticketId) => (
+                  <ClosedTicketMenuItem
+                    key={ticketId}
+                    ticketId={ticketId}
+                    isActive={pathname === `/${ticketId}`}
+                  />
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
       </SidebarContent>
       <SidebarFooter />
     </Sidebar>
