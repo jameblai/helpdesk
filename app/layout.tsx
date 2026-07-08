@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { GameLayout } from "@/components/GameLayout";
 
@@ -7,6 +7,12 @@ const sans = Geist({
   variable: "--font-sans",
   subsets: ["latin"],
 });
+
+const mono = Geist_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+});
+
 
 export const metadata: Metadata = {
   title: "Alien Helpdesk",
@@ -19,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${sans.variable} h-full antialiased`}>
+    <html lang="en" className={`${sans.variable} ${mono.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
         <GameLayout>{children}</GameLayout>
       </body>
