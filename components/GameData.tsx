@@ -6,7 +6,7 @@ export function GameData() {
   const game = useGame();
   return (
     <pre
-      className="p-2 bg-foreground text-background whitespace-pre-wrap"
+      className="bg-foreground text-background p-2 whitespace-pre-wrap"
       suppressHydrationWarning
     >
       {JSON.stringify(game, null, 2)}
