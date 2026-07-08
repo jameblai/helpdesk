@@ -1,5 +1,5 @@
 export type Id = string; // uuid
 
-export function generateId(): Id {
+export function randomId(): Id {
     return crypto.randomUUID();
 }
