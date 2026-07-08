@@ -5,7 +5,7 @@ export default function GamePage() {
   return (
     <Container className="py-4 md:py-8">
       <article className="prose">
-        <h1>Overview</h1>
+        <h1>Welcome</h1>
         <p>
           Keep the helpdesk running by reviewing each incoming ticket before it
           expires.
