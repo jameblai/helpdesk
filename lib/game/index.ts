@@ -32,6 +32,7 @@ export interface GameState {
   ticketIntervalMs: number;
 
   isRunning: boolean;
+  assignInitialTicket: () => void;
   tick: () => void;
 
   submitAnswer: (ticketId: Id, answer: string) => Promise<void>;
@@ -65,6 +66,7 @@ function deriveTickets(
   }
 
   const totalTickets = ticketIds.length;
+  const resolvedTickets = successfulTickets + failedTickets;
 
   return {
     openTicketIds,
@@ -75,9 +77,9 @@ function deriveTickets(
       successfulTickets,
       failedTickets,
       reputation:
-        totalTickets === 0
+        resolvedTickets === 0
           ? 100
-          : Math.floor((successfulTickets / totalTickets) * 100),
+          : Math.floor((successfulTickets / resolvedTickets) * 100),
     },
   };
 }
@@ -95,13 +97,33 @@ export const useGame = create<GameState>((set, get) => ({
     reputation: 100,
   },
 
-  startedAt: Date.now(),
-  now: Date.now(),
+  startedAt: 0,
+  now: 0,
 
-  nextTicketAt: Date.now() + TICKET_INTERVAL_MS,
+  nextTicketAt: Number.POSITIVE_INFINITY,
   ticketIntervalMs: TICKET_INTERVAL_MS,
 
   isRunning: true,
+  assignInitialTicket: () => {
+    const state = get();
+    if (state.ticketIds.length > 0) return;
+
+    const now = Date.now();
+    const ticket = randomTicket();
+    const ticketIds = [ticket.id];
+    const ticketsById = { [ticket.id]: ticket };
+    const derivations = deriveTickets(ticketIds, ticketsById);
+
+    set({
+      startedAt: now,
+      now,
+      nextTicketAt: now + TICKET_INTERVAL_MS,
+      ticketIds,
+      ticketsById,
+      ...derivations,
+    });
+  },
+
   tick: () => {
     const state = get();
     if (!state.isRunning) return;
@@ -161,7 +183,10 @@ export const useGame = create<GameState>((set, get) => ({
     if (!ticket) return;
     if (ticket.status !== "open") return;
 
-    const { passed, feedback } = await judgeTicket({ ref: ticket.ref, answer });
+    const { passed, feedback } = await judgeTicket({
+      ref: ticket.ref,
+      answer,
+    });
     const latestState = get();
     const latestTicket = latestState.ticketsById[ticketId];
     if (!latestTicket) return;
