@@ -1,6 +1,8 @@
 "use server";
 
+import { checkRateLimit } from "@vercel/firewall";
 import { generateText, Output } from "ai";
+import { headers } from "next/headers";
 import { ticketBank } from "./tickets";
 import {
   JudgeTicketInput,
@@ -19,6 +21,18 @@ export async function judgeTicket(input: JudgeTicketInput) {
   const ticket = ticketBank.find((t) => t.ref === ref);
   if (!ticket) {
     throw new Error("Ticket not found");
+  }
+
+  const rateLimit = await checkRateLimit("judge-ticket", {
+    headers: await headers(),
+  });
+  if (rateLimit.rateLimited) {
+    throw new Error(
+      "Too many ticket judgements. Please wait before trying again.",
+    );
+  }
+  if (rateLimit.error === "not-found") {
+    throw new Error("Ticket judgement rate limit is not configured.");
   }
 
   const result = await generateText({
