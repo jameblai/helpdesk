@@ -14,22 +14,56 @@ import {
   SidebarMenuItem,
 } from "./ui/sidebar";
 import Link from "next/link";
-import { useMemo } from "react";
+import { memo } from "react";
 import { IconLifebuoy } from "@tabler/icons-react";
-import { CircleTimer } from "./CircleTimer";
+import { TicketCountdown } from "./TicketCountdown";
+
+const OpenTicketMenuItem = memo(function OpenTicketMenuItem({
+  ticketId,
+}: {
+  ticketId: string;
+}) {
+  const ticket = useGame((state) => state.ticketsById[ticketId]);
+  if (!ticket) return null;
+
+  return (
+    <SidebarMenuItem>
+      <SidebarMenuButton
+        render={
+          <Link href={`/${ticket.id}`} className="flex items-center gap-4">
+            <span className="truncate">{ticket.subject}</span>
+            <TicketCountdown ticket={ticket} showText={false} size={16} />
+          </Link>
+        }
+      />
+    </SidebarMenuItem>
+  );
+});
+
+const ClosedTicketMenuItem = memo(function ClosedTicketMenuItem({
+  ticketId,
+}: {
+  ticketId: string;
+}) {
+  const ticket = useGame((state) => state.ticketsById[ticketId]);
+  if (!ticket) return null;
+
+  return (
+    <SidebarMenuItem>
+      <SidebarMenuButton
+        render={
+          <Link href={`/${ticket.id}`} className="flex items-center gap-4">
+            <span className="truncate">{ticket.subject}</span>
+          </Link>
+        }
+      />
+    </SidebarMenuItem>
+  );
+});
 
 export function GameSidebar() {
-  const game = useGame();
-
-  const openTickets = useMemo(
-    () => game.tickets.filter((ticket) => ticket.status === "open"),
-    [game.tickets],
-  );
-
-  const closedTickets = useMemo(
-    () => game.tickets.filter((ticket) => ticket.status !== "open"),
-    [game.tickets],
-  );
+  const openTicketIds = useGame((state) => state.openTicketIds);
+  const closedTicketIds = useGame((state) => state.closedTicketIds);
 
   return (
     <Sidebar>
@@ -47,28 +81,9 @@ export function GameSidebar() {
           <SidebarGroupLabel>Open tickets</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {openTickets.map((ticket) => {
-                return (
-                  <SidebarMenuItem key={ticket.id}>
-                    <SidebarMenuButton
-                      render={
-                        <Link
-                          href={`/${ticket.id}`}
-                          className="flex items-center gap-4"
-                        >
-                          <span className="truncate">{ticket.subject}</span>
-                          <CircleTimer
-                            durationMs={ticket.dueAt - ticket.createdAt}
-                            remainingMs={ticket.dueAt - game.now}
-                            showText={false}
-                            size={16}
-                          />
-                        </Link>
-                      }
-                    />
-                  </SidebarMenuItem>
-                );
-              })}
+              {openTicketIds.map((ticketId) => (
+                <OpenTicketMenuItem key={ticketId} ticketId={ticketId} />
+              ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -76,28 +91,9 @@ export function GameSidebar() {
           <SidebarGroupLabel>Closed tickets</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {closedTickets.map((ticket) => {
-                return (
-                  <SidebarMenuItem key={ticket.id}>
-                    <SidebarMenuButton
-                      render={
-                        <Link
-                          href={`/${ticket.id}`}
-                          className="flex items-center gap-4"
-                        >
-                          <span className="truncate">{ticket.subject}</span>
-                          <CircleTimer
-                            durationMs={ticket.dueAt - ticket.createdAt}
-                            remainingMs={ticket.dueAt - game.now}
-                            showText={false}
-                            size={16}
-                          />
-                        </Link>
-                      }
-                    />
-                  </SidebarMenuItem>
-                );
-              })}
+              {closedTicketIds.map((ticketId) => (
+                <ClosedTicketMenuItem key={ticketId} ticketId={ticketId} />
+              ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

@@ -1,14 +1,29 @@
 import { create } from "zustand";
 import { randomTicket, Ticket, TicketJudgement, TicketStatus } from "./tickets";
 import { Id } from "../id";
-import { calculateReputation } from "./reputation";
 import { judgeTicket } from "./server";
-import { TICKET_DUE_MS, TICKET_INTERVAL_MS } from "./constants";
+import { TICKET_INTERVAL_MS } from "./constants";
+
+export interface GameStats {
+  totalTickets: number;
+  openTickets: number;
+  successfulTickets: number;
+  failedTickets: number;
+  reputation: number;
+}
+
+interface TicketDerivations {
+  openTicketIds: Id[];
+  closedTicketIds: Id[];
+  stats: GameStats;
+}
 
 export interface GameState {
-  tickets: Ticket[];
-
-  reputation: number; // percentage of successful tickets
+  ticketsById: Record<Id, Ticket>;
+  ticketIds: Id[];
+  openTicketIds: Id[];
+  closedTicketIds: Id[];
+  stats: GameStats;
 
   startedAt: number;
   now: number;
@@ -22,10 +37,63 @@ export interface GameState {
   submitAnswer: (ticketId: Id, answer: string) => Promise<void>;
 }
 
-export const useGame = create<GameState>((set, get) => ({
-  tickets: [],
+function deriveTickets(
+  ticketIds: Id[],
+  ticketsById: Record<Id, Ticket>,
+): TicketDerivations {
+  const openTicketIds: Id[] = [];
+  const closedTicketIds: Id[] = [];
+  let successfulTickets = 0;
+  let failedTickets = 0;
 
-  reputation: 100,
+  for (const ticketId of ticketIds) {
+    const ticket = ticketsById[ticketId];
+    if (!ticket) continue;
+
+    if (ticket.status === "open") {
+      openTicketIds.push(ticketId);
+      continue;
+    }
+
+    closedTicketIds.push(ticketId);
+
+    if (ticket.status === "success") {
+      successfulTickets += 1;
+    } else {
+      failedTickets += 1;
+    }
+  }
+
+  const totalTickets = ticketIds.length;
+
+  return {
+    openTicketIds,
+    closedTicketIds,
+    stats: {
+      totalTickets,
+      openTickets: openTicketIds.length,
+      successfulTickets,
+      failedTickets,
+      reputation:
+        totalTickets === 0
+          ? 100
+          : Math.floor((successfulTickets / totalTickets) * 100),
+    },
+  };
+}
+
+export const useGame = create<GameState>((set, get) => ({
+  ticketsById: {},
+  ticketIds: [],
+  openTicketIds: [],
+  closedTicketIds: [],
+  stats: {
+    totalTickets: 0,
+    openTickets: 0,
+    successfulTickets: 0,
+    failedTickets: 0,
+    reputation: 100,
+  },
 
   startedAt: Date.now(),
   now: Date.now(),
@@ -39,62 +107,87 @@ export const useGame = create<GameState>((set, get) => ({
     if (!state.isRunning) return;
 
     const now = Date.now();
-    let didFailTicket = false;
+    let ticketIds = state.ticketIds;
+    let ticketsById = state.ticketsById;
+    let nextTicketAt = state.nextTicketAt;
+    let didChangeTickets = false;
 
-    // fail open tickets that are past due
-    const tickets = state.tickets.map((ticket) => {
-      const isOpen = ticket.status === "open";
-      const pastDue = now > ticket.dueAt;
+    for (const ticketId of state.openTicketIds) {
+      const ticket = ticketsById[ticketId];
+      if (!ticket || now <= ticket.dueAt) continue;
 
-      if (isOpen && pastDue) {
-        didFailTicket = true;
-        return { ...ticket, status: "failed" } satisfies Ticket;
+      if (!didChangeTickets) {
+        ticketsById = { ...ticketsById };
+        didChangeTickets = true;
       }
 
-      return ticket;
-    });
-
-    let nextTicketAt = state.nextTicketAt;
+      ticketsById[ticketId] = {
+        ...ticket,
+        status: "failed",
+      } satisfies Ticket;
+    }
 
     // add new ticket if it's time
     if (now >= state.nextTicketAt) {
       const ticket = randomTicket();
-      tickets.push(ticket);
+      if (!didChangeTickets) {
+        ticketsById = { ...ticketsById };
+        didChangeTickets = true;
+      }
+
+      ticketIds = [...ticketIds, ticket.id];
+      ticketsById[ticket.id] = ticket;
       nextTicketAt = now + TICKET_INTERVAL_MS;
     }
 
-    // calculate reputation if the ticket failed
-    const reputation = didFailTicket
-      ? calculateReputation(tickets)
-      : state.reputation;
+    if (!didChangeTickets) {
+      set({ now });
+      return;
+    }
+
+    const derivations = deriveTickets(ticketIds, ticketsById);
 
     set({
       now,
-      tickets,
       nextTicketAt,
-      reputation,
+      ticketIds,
+      ticketsById,
+      ...derivations,
     });
   },
 
   submitAnswer: async (ticketId: Id, answer: string) => {
-    const state = get();
-    const ticket = state.tickets.find((t) => t.id === ticketId);
+    const ticket = get().ticketsById[ticketId];
     if (!ticket) return;
     if (ticket.status !== "open") return;
 
     const { passed, feedback } = await judgeTicket({ ref: ticket.ref, answer });
+    const latestState = get();
+    const latestTicket = latestState.ticketsById[ticketId];
+    if (!latestTicket) return;
+    if (latestTicket.status !== "open") return;
+
     const judgement = {
       passed,
       feedback,
     } satisfies TicketJudgement;
     const status: TicketStatus = passed ? "success" : "failed";
 
-    const tickets = state.tickets.map((t) =>
-      t.id === ticketId
-        ? ({ ...t, answer, status, judgement } satisfies Ticket)
-        : t,
-    );
+    const ticketsById = {
+      ...latestState.ticketsById,
+      [ticketId]: {
+        ...latestTicket,
+        answer,
+        status,
+        judgement,
+      } satisfies Ticket,
+    };
 
-    set({ tickets });
+    const derivations = deriveTickets(latestState.ticketIds, ticketsById);
+
+    set({
+      ticketsById,
+      ...derivations,
+    });
   },
 }));

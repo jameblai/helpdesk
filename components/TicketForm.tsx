@@ -8,7 +8,7 @@ import { Ticket } from "@/lib/game/tickets";
 import { cn } from "@/lib/utils";
 
 export function TicketForm({ ticket }: { ticket: Ticket }) {
-  const game = useGame();
+  const submitAnswer = useGame((state) => state.submitAnswer);
   const [answer, setAnswer] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -21,7 +21,7 @@ export function TicketForm({ ticket }: { ticket: Ticket }) {
     setIsSubmitting(true);
 
     try {
-      await game.submitAnswer(ticket.id, answer);
+      await submitAnswer(ticket.id, answer);
       setAnswer("");
     } finally {
       setIsSubmitting(false);

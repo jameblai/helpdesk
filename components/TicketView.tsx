@@ -4,12 +4,9 @@ import { Ticket } from "@/lib/game/tickets";
 import { AuthorLine } from "./AuthorLine";
 import { TicketForm } from "./TicketForm";
 import { TicketResolution } from "./TicketResolution";
-import { CircleTimer } from "./CircleTimer";
-import { useGame } from "@/lib/game";
+import { TicketCountdown } from "./TicketCountdown";
 
 export function TicketView({ ticket }: { ticket: Ticket }) {
-  const now = useGame((s) => s.now);
-
   return (
     <div className="flex flex-col gap-6">
       <TicketResolution ticket={ticket} />
@@ -23,10 +20,7 @@ export function TicketView({ ticket }: { ticket: Ticket }) {
             </h2>
           </div>
 
-          <CircleTimer
-            durationMs={ticket.dueAt - ticket.createdAt}
-            remainingMs={ticket.dueAt - now}
-          />
+          {ticket.status === "open" && <TicketCountdown ticket={ticket} />}
         </div>
 
         <p className="bg-primary text-primary-foreground max-w-2xl self-start border px-2.5 py-2 text-sm">

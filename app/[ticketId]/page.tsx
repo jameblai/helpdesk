@@ -4,7 +4,7 @@ import { Container } from "@/components/Container";
 import { TicketView } from "@/components/TicketView";
 import { useGame } from "@/lib/game";
 import { redirect } from "next/navigation";
-import { use, useMemo } from "react";
+import { use } from "react";
 
 export default function TicketPage({
   params,
@@ -12,11 +12,7 @@ export default function TicketPage({
   params: Promise<{ ticketId: string }>;
 }) {
   const { ticketId } = use(params);
-  const game = useGame();
-  const ticket = useMemo(
-    () => game.tickets.find((t) => t.id === ticketId),
-    [game.tickets, ticketId],
-  );
+  const ticket = useGame((state) => state.ticketsById[ticketId]);
 
   if (!ticket) return redirect("/");
 
