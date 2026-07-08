@@ -5,14 +5,17 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useGame } from "@/lib/game";
 import { Id } from "@/lib/id";
+import { Ticket } from "@/lib/game/tickets";
 
-export function TicketForm({ ticketId }: { ticketId: Id }) {
+export function TicketForm({ ticket }: { ticket: Ticket }) {
   const game = useGame();
   const [answer, setAnswer] = useState("");
 
   async function handleSubmit() {
-    await game.submitAnswer(ticketId, answer);
+    await game.submitAnswer(ticket.id, answer);
   }
+
+  if (ticket.status !== "open") return null;
 
   return (
     <form

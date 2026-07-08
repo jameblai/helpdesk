@@ -17,7 +17,7 @@ export default function TicketPage({params}: { params: Promise<{ ticketId: strin
   return (
     <Container className="py-4">
       <TicketData ticket={ticket} />
-      <TicketForm ticketId={ticket.id} />
+      <TicketForm ticket={ticket} />
     </Container>
   );
 }
