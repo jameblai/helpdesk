@@ -7,14 +7,16 @@ export function AuthorLine({ author }: { author: Author }) {
       <Image
         src={author.image}
         alt={author.name}
-        className="size-10 rounded-full border bg-muted"
+        className="bg-muted size-10 rounded-full border"
         width={4000}
         height={4000}
         sizes="40px"
       />
       <div className="flex flex-col gap-0.5">
-        <p className="font-medium leading-none">{author.name}</p>
-        <p className="text-sm text-muted-foreground leading-none">{author.variant}</p>
+        <p className="leading-none font-medium">{author.name}</p>
+        <p className="text-muted-foreground text-sm leading-none">
+          {author.variant}
+        </p>
       </div>
     </div>
   );

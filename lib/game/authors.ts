@@ -8,7 +8,14 @@ export const authorNames = [
   "Grace",
 ] as const;
 
-export const authorVariants = ["grob0", "grob1", "kindor0", "kindor1", "rulix0", "rulix1"] as const;
+export const authorVariants = [
+  "grob0",
+  "grob1",
+  "kindor0",
+  "kindor1",
+  "rulix0",
+  "rulix1",
+] as const;
 
 export type AuthorName = (typeof authorNames)[number];
 export type AuthorVariant = (typeof authorVariants)[number];

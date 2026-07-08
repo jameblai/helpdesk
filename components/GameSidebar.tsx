@@ -43,8 +43,8 @@ export function GameSidebar() {
                       }
                     />
                   </SidebarMenuItem>
-                )
-                })}
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
