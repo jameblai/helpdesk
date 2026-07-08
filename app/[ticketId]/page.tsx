@@ -1,6 +1,7 @@
 "use client";
 import { Container } from "@/components/Container";
 import { TicketData } from "@/components/TicketData";
+import { TicketForm } from "@/components/TicketForm";
 import { useGame } from "@/lib/game";
 import { use, useMemo } from "react";
 
@@ -16,6 +17,7 @@ export default function TicketPage({params}: { params: Promise<{ ticketId: strin
   return (
     <Container className="py-4">
       <TicketData ticket={ticket} />
+      <TicketForm ticketId={ticket.id} />
     </Container>
   );
 }

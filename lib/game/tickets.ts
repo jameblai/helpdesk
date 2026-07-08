@@ -1,13 +1,11 @@
 import { Author, randomAuthor } from "./authors";
 import { randomId, Id } from "../id";
-
-export const TICKET_DUE_MS = 60_000; // 1 minute
+import { TICKET_DUE_MS } from "./constants";
 
 export type TicketStatus = "open" | "success" | "failed";
 
 export interface TicketJudgement {
   passed: boolean;
-  score: number;
   feedback: string;
 }
 
@@ -64,14 +62,5 @@ export function randomTicket(): Ticket {
     status: "open",
     createdAt: now,
     dueAt: now + TICKET_DUE_MS,
-  };
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function judgeTicket(_ticket: Ticket, _answer: string): TicketJudgement {
-  return {
-    passed: true,
-    score: 100,
-    feedback: "Well done",
   };
 }
