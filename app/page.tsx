@@ -1,10 +1,10 @@
 import { Container } from "@/components/Container";
-import { GameData } from "@/components/GameData";
+import { GameStats } from "@/components/GameStats";
 
 export default function GamePage() {
   return (
     <Container className="py-4">
-      <GameData />
+      <GameStats />
     </Container>
   );
 }
