@@ -26,21 +26,19 @@ export async function judgeTicket(input: JudgeTicketInput) {
     output: Output.object({
       schema: judgeTicketOutputSchema,
     }),
-    prompt: `You are grading a helpdesk answer against a canonical answer.
-
-Question:
+    system: `Grade helpdesk replies.
+Pass if the reply gives the expected answer, including as a harmless superset.
+Allow paraphrase, typos, politeness, brief reasons/context, and extra non-conflicting details.
+Fail if it omits or contradicts the expected answer, or changes a place, code meaning, permit status, action, or yes/no.
+Feedback: one short sentence to the player.`,
+    prompt: `Question:
 ${ticket.question}
 
-Canonical answer:
+Expected:
 ${ticket.expectedAnswer}
 
-Submitted answer:
-${answer}
-
-Return passed=true only when the submitted answer is semantically equivalent to the canonical answer for this question.
-Accept paraphrases, casing differences, minor spelling mistakes, and extra polite wording.
-Reject answers that name the wrong place, code meaning, permission status, action, or yes/no value.
-Feedback must be one short sentence for the player.`,
+Reply:
+${answer}`,
   });
 
   return result.output;
