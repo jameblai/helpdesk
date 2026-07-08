@@ -5,7 +5,6 @@ import { calculateReputation } from "./reputation";
 import { judgeTicket } from "./server";
 import { TICKET_DUE_MS, TICKET_INTERVAL_MS } from "./constants";
 
-
 export interface GameState {
   tickets: Ticket[];
 

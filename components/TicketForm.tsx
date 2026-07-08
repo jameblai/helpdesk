@@ -23,7 +23,7 @@ export function TicketForm({ ticket }: { ticket: Ticket }) {
         e.preventDefault();
         handleSubmit();
       }}
-      className="flex gap-2 items-center"
+      className="flex items-center gap-2"
     >
       <Input
         type="text"

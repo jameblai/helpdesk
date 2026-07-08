@@ -21,7 +21,7 @@ export function GameSidebar() {
   return (
     <Sidebar>
       <SidebarHeader className="px-4 pt-4 pb-0">
-        <Link href="/" className="font-semibold tracking-tight leading-none">
+        <Link href="/" className="leading-none font-semibold tracking-tight">
           Helpdesk
         </Link>
       </SidebarHeader>

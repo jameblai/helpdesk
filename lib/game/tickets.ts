@@ -50,8 +50,7 @@ export function randomTicket(): Ticket {
   const id = randomId();
   const author = randomAuthor();
 
-  const bareTicket =
-    ticketBank[Math.floor(Math.random() * ticketBank.length)];
+  const bareTicket = ticketBank[Math.floor(Math.random() * ticketBank.length)];
 
   const now = Date.now();
 
