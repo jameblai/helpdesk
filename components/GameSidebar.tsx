@@ -21,8 +21,10 @@ import { usePathname } from "next/navigation";
 
 const OpenTicketMenuItem = memo(function OpenTicketMenuItem({
   ticketId,
+  isActive,
 }: {
   ticketId: string;
+  isActive: boolean;
 }) {
   const ticket = useGame((state) => state.ticketsById[ticketId]);
   if (!ticket) return null;
@@ -30,6 +32,7 @@ const OpenTicketMenuItem = memo(function OpenTicketMenuItem({
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
+        isActive={isActive}
         render={
           <Link
             href={`/${ticket.id}`}
@@ -46,8 +49,10 @@ const OpenTicketMenuItem = memo(function OpenTicketMenuItem({
 
 const ClosedTicketMenuItem = memo(function ClosedTicketMenuItem({
   ticketId,
+  isActive,
 }: {
   ticketId: string;
+  isActive: boolean;
 }) {
   const ticket = useGame((state) => state.ticketsById[ticketId]);
   if (!ticket) return null;
@@ -55,6 +60,7 @@ const ClosedTicketMenuItem = memo(function ClosedTicketMenuItem({
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
+        isActive={isActive}
         render={
           <Link
             href={`/${ticket.id}`}
@@ -108,7 +114,11 @@ export function GameSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {openTicketIds.map((ticketId) => (
-                <OpenTicketMenuItem key={ticketId} ticketId={ticketId} />
+                <OpenTicketMenuItem
+                  key={ticketId}
+                  ticketId={ticketId}
+                  isActive={pathname === `/${ticketId}`}
+                />
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
@@ -118,7 +128,11 @@ export function GameSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {closedTicketIds.map((ticketId) => (
-                <ClosedTicketMenuItem key={ticketId} ticketId={ticketId} />
+                <ClosedTicketMenuItem
+                  key={ticketId}
+                  ticketId={ticketId}
+                  isActive={pathname === `/${ticketId}`}
+                />
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
