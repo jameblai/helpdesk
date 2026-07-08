@@ -1,4 +1,5 @@
 "use client";
+import { AuthorLine } from "@/components/AuthorLine";
 import { Container } from "@/components/Container";
 import { TicketData } from "@/components/TicketData";
 import { TicketForm } from "@/components/TicketForm";
@@ -26,6 +27,7 @@ export default function TicketPage({
 
   return (
     <Container className="py-4">
+      <AuthorLine author={ticket.author} />
       <TicketData ticket={ticket} />
       <TicketForm ticket={ticket} />
     </Container>

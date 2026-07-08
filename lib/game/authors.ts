@@ -1,4 +1,4 @@
-export const authors = [
+export const authorNames = [
   "Alice",
   "Bob",
   "Charlie",
@@ -8,8 +8,33 @@ export const authors = [
   "Grace",
 ] as const;
 
-export type Author = (typeof authors)[number];
+export const authorVariants = ["grob0", "grob1", "kindor0", "kindor1", "rulix0", "rulix1"] as const;
+
+export type AuthorName = (typeof authorNames)[number];
+export type AuthorVariant = (typeof authorVariants)[number];
+
+export interface Author {
+  name: AuthorName;
+  variant: AuthorVariant;
+  image: string;
+}
+
+function randomAuthorName(): AuthorName {
+  return authorNames[Math.floor(Math.random() * authorNames.length)];
+}
+
+function randomAuthorVariant(): AuthorVariant {
+  return authorVariants[Math.floor(Math.random() * authorVariants.length)];
+}
 
 export function randomAuthor(): Author {
-  return authors[Math.floor(Math.random() * authors.length)];
+  const name = randomAuthorName();
+  const variant = randomAuthorVariant();
+  const image = `/${variant}.png`;
+
+  return {
+    name: name,
+    variant: variant,
+    image: image,
+  };
 }
