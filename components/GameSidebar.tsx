@@ -15,7 +15,7 @@ import {
 } from "./ui/sidebar";
 import Link from "next/link";
 import { memo } from "react";
-import { IconBook2, IconLifebuoy } from "@tabler/icons-react";
+import { IconBook2, IconHome, IconLifebuoy } from "@tabler/icons-react";
 import { TicketCountdown } from "./TicketCountdown";
 import { usePathname } from "next/navigation";
 
@@ -94,6 +94,18 @@ export function GameSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  isActive={pathname === "/"}
+                  tooltip="Overview"
+                  render={
+                    <Link href="/">
+                      <IconHome />
+                      <span>Overview</span>
+                    </Link>
+                  }
+                />
+              </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton
                   isActive={pathname === "/manual"}
