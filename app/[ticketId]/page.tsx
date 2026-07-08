@@ -21,7 +21,7 @@ export default function TicketPage({
   if (!ticket) return redirect("/");
 
   return (
-    <Container className="py-4">
+    <Container className="py-4 md:py-8">
       <TicketView ticket={ticket} />
     </Container>
   );
