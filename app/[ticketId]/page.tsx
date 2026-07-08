@@ -3,6 +3,7 @@
 import { Container } from "@/components/Container";
 import { TicketView } from "@/components/TicketView";
 import { useGame } from "@/lib/game";
+import { redirect } from "next/navigation";
 import { use, useMemo } from "react";
 
 export default function TicketPage({
@@ -17,7 +18,7 @@ export default function TicketPage({
     [game.tickets, ticketId],
   );
 
-  if (!ticket) return null;
+  if (!ticket) return redirect("/");
 
   return (
     <Container className="py-4">
