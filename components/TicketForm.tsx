@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useGame } from "@/lib/game";
-import { Id } from "@/lib/id";
 import { Ticket } from "@/lib/game/tickets";
 
 export function TicketForm({ ticket }: { ticket: Ticket }) {
