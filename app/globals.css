@@ -150,6 +150,14 @@
     @apply text-foreground/80 my-4;
   }
 
+  .prose ul {
+    @apply text-foreground/80 my-4 list-disc space-y-1 pl-5;
+  }
+
+  .prose li {
+    @apply pl-1;
+  }
+
   .prose code {
     @apply bg-muted text-foreground px-1 py-0.5 font-mono text-sm font-medium;
   }
