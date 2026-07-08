@@ -81,6 +81,7 @@ export const useGame = create<GameState>((set, get) => ({
     const state = get();
     const ticket = state.tickets.find((t) => t.id === ticketId);
     if (!ticket) return;
+    if (ticket.status !== "open") return;
 
     const { passed, feedback } = await judgeTicket({ ref: ticket.ref, answer });
     const judgement = {
