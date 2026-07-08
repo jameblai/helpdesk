@@ -8,10 +8,8 @@ import { TicketCountdown } from "./TicketCountdown";
 
 export function TicketView({ ticket }: { ticket: Ticket }) {
   return (
-    <div className="flex flex-col gap-6">
-      <TicketResolution ticket={ticket} />
-
-      <div className="flex flex-col gap-4">
+    <div className="flex flex-1 flex-col gap-6">
+      <div className="flex flex-1 flex-col gap-4">
         <div className="flex items-start justify-between gap-4">
           <div className="flex flex-col gap-4">
             <AuthorLine author={ticket.author} />
@@ -32,7 +30,11 @@ export function TicketView({ ticket }: { ticket: Ticket }) {
             {ticket.answer}
           </p>
         )}
-        <TicketForm ticket={ticket} />
+
+        <div className="mt-auto flex flex-col gap-4">
+          <TicketResolution ticket={ticket} />
+          <TicketForm ticket={ticket} />
+        </div>
       </div>
     </div>
   );
