@@ -1,5 +1,9 @@
 # Helpdesk Manual
 
+This manual is the primary reference for handling Alien Helpdesk tickets. Use it to identify planets, species, hazards, vehicle codes, permits, and other details that may affect how a support request should be answered.
+
+When responding to callers, match the advice to the information provided in the ticket. Environmental dangers, species-specific needs, permit symbols, and troubleshooting codes should all be considered before giving a final recommendation.
+
 ## Hypersolar System
 
 ### Nautilus
