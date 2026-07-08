@@ -42,9 +42,14 @@ export function TicketForm({ ticket }: { ticket: Ticket }) {
         placeholder="Your message..."
         value={answer}
         onChange={(e) => setAnswer(e.target.value)}
-        disabled={isSubmitting || ticket.status !== "open" || !answer.trim()}
+        disabled={isSubmitting || ticket.status !== "open"}
       />
-      <Button type="submit">Send</Button>
+      <Button
+        type="submit"
+        disabled={isSubmitting || ticket.status !== "open" || !answer.trim()}
+      >
+        Send
+      </Button>
     </form>
   );
 }
