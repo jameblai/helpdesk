@@ -31,7 +31,7 @@ export function GameSidebar() {
 
   return (
     <Sidebar>
-      <SidebarHeader className="bg-sidebar border-b p-4">
+      <SidebarHeader className="bg-sidebar p-4">
         <Link
           href="/"
           className="w-min leading-none font-semibold tracking-tight"
