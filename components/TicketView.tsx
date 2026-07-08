@@ -5,6 +5,7 @@ import { AuthorLine } from "./AuthorLine";
 import { TicketForm } from "./TicketForm";
 import { TicketResolution } from "./TicketResolution";
 import { TicketCountdown } from "./TicketCountdown";
+import { TicketMessage } from "./TicketMessage";
 
 export function TicketView({ ticket }: { ticket: Ticket }) {
   return (
@@ -21,14 +22,10 @@ export function TicketView({ ticket }: { ticket: Ticket }) {
           {ticket.status === "open" && <TicketCountdown ticket={ticket} />}
         </div>
 
-        <p className="bg-primary text-primary-foreground max-w-2xl self-start border border-transparent px-2.5 py-2 text-sm">
-          {ticket.question}
-        </p>
+        <TicketMessage variant="question">{ticket.question}</TicketMessage>
 
         {ticket.answer && (
-          <p className="bg-secondary text-secondary-foreground max-w-2xl self-end border px-2.5 py-2 text-sm">
-            {ticket.answer}
-          </p>
+          <TicketMessage variant="answer">{ticket.answer}</TicketMessage>
         )}
 
         <div className="mt-auto flex flex-col gap-4">
