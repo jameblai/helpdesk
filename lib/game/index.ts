@@ -90,7 +90,9 @@ export const useGame = create<GameState>((set, get) => ({
     const status: TicketStatus = passed ? "success" : "failed";
 
     const tickets = state.tickets.map((t) =>
-      t.id === ticketId ? ({ ...t, status, judgement } satisfies Ticket) : t,
+      t.id === ticketId
+        ? ({ ...t, answer, status, judgement } satisfies Ticket)
+        : t,
     );
 
     set({ tickets });
