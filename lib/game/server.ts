@@ -1,8 +1,6 @@
 "use server";
 
-import { checkRateLimit } from "@vercel/firewall";
 import { generateText, Output } from "ai";
-import { headers } from "next/headers";
 import { ticketBank } from "./tickets";
 import {
   JudgeTicketInput,
