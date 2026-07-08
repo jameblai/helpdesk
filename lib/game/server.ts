@@ -23,18 +23,6 @@ export async function judgeTicket(input: JudgeTicketInput) {
     throw new Error("Ticket not found");
   }
 
-  const rateLimit = await checkRateLimit("judge-ticket", {
-    headers: await headers(),
-  });
-  if (rateLimit.rateLimited) {
-    throw new Error(
-      "Too many ticket judgements. Please wait before trying again.",
-    );
-  }
-  if (rateLimit.error === "not-found") {
-    throw new Error("Ticket judgement rate limit is not configured.");
-  }
-
   const result = await generateText({
     model: "gpt-5.4-mini",
     output: Output.object({

@@ -13,9 +13,6 @@ importers:
       "@tabler/icons-react":
         specifier: ^3.44.0
         version: 3.44.0(react@19.2.4)
-      "@vercel/firewall":
-        specifier: ^1.2.1
-        version: 1.2.1
       ai:
         specifier: ^7.0.18
         version: 7.0.18(zod@4.4.3)
@@ -1506,13 +1503,6 @@ packages:
       }
     cpu: [x64]
     os: [win32]
-
-  "@vercel/firewall@1.2.1":
-    resolution:
-      {
-        integrity: sha512-WlxjEPpf+GWYMontNNZqZjvLL40ziGwy9swwI9da/L1fB/syAO1S2fMtlBXkp4EGVF6nlXSKmwvkUd6YPWJbbg==,
-      }
-    engines: { node: ">= 20" }
 
   "@vercel/oidc@3.2.0":
     resolution:
@@ -6479,8 +6469,6 @@ snapshots:
 
   "@unrs/resolver-binding-win32-x64-msvc@1.12.2":
     optional: true
-
-  "@vercel/firewall@1.2.1": {}
 
   "@vercel/oidc@3.2.0": {}
 
