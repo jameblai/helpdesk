@@ -5,7 +5,8 @@ export function GameTopBar() {
   return (
     <div className="border-b p-2">
       <SidebarTrigger>
-        <IconLayoutSidebar /><span className="sr-only">Toggle Sidebar</span>
+        <IconLayoutSidebar />
+        <span className="sr-only">Toggle Sidebar</span>
       </SidebarTrigger>
     </div>
   );
