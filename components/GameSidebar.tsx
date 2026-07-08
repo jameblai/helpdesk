@@ -16,6 +16,7 @@ import {
 import Link from "next/link";
 import { useMemo } from "react";
 import { IconLifebuoy } from "@tabler/icons-react";
+import { CircleTimer } from "./CircleTimer";
 
 export function GameSidebar() {
   const game = useGame();
@@ -51,8 +52,17 @@ export function GameSidebar() {
                   <SidebarMenuItem key={ticket.id}>
                     <SidebarMenuButton
                       render={
-                        <Link href={`/${ticket.id}`} className="truncate">
-                          {ticket.subject}
+                        <Link
+                          href={`/${ticket.id}`}
+                          className="flex items-center gap-4"
+                        >
+                          <span className="truncate">{ticket.subject}</span>
+                          <CircleTimer
+                            durationMs={ticket.dueAt - ticket.createdAt}
+                            remainingMs={ticket.dueAt - game.now}
+                            showText={false}
+                            size={16}
+                          />
                         </Link>
                       }
                     />
@@ -71,8 +81,17 @@ export function GameSidebar() {
                   <SidebarMenuItem key={ticket.id}>
                     <SidebarMenuButton
                       render={
-                        <Link href={`/${ticket.id}`} className="truncate">
-                          {ticket.subject}
+                        <Link
+                          href={`/${ticket.id}`}
+                          className="flex items-center gap-4"
+                        >
+                          <span className="truncate">{ticket.subject}</span>
+                          <CircleTimer
+                            durationMs={ticket.dueAt - ticket.createdAt}
+                            remainingMs={ticket.dueAt - game.now}
+                            showText={false}
+                            size={16}
+                          />
                         </Link>
                       }
                     />

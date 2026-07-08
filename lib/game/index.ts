@@ -44,7 +44,7 @@ export const useGame = create<GameState>((set, get) => ({
     // fail open tickets that are past due
     const tickets = state.tickets.map((ticket) => {
       const isOpen = ticket.status === "open";
-      const pastDue = now - ticket.dueAt >= TICKET_DUE_MS;
+      const pastDue = now > ticket.dueAt;
 
       if (isOpen && pastDue) {
         didFailTicket = true;
