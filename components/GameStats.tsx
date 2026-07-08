@@ -32,7 +32,7 @@ export function GameStats() {
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
       <StatCard label="Successful tickets" value={stats.successfulTickets} />
       <StatCard label="Failed tickets" value={stats.failedTickets} />
-      <StatCard label="Reputation" value={`${stats.reputation.toFixed(2)}%`} />
+      <StatCard label="Reputation" value={`${Math.round(stats.reputation)}%`} />
       <DurationStatCard startedAt={startedAt} />
     </div>
   );
