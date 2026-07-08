@@ -30,17 +30,21 @@ export function GameSidebar() {
           <SidebarGroupLabel>Tickets</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {game.tickets.map((ticket) => (
-                <SidebarMenuItem key={ticket.id}>
-                  <SidebarMenuButton
-                    render={
-                      <Link href={`/${ticket.id}`} className="truncate">
-                        {ticket.subject}
-                      </Link>
-                    }
-                  />
-                </SidebarMenuItem>
-              ))}
+              {game.tickets.map((ticket) => {
+                if (ticket.status !== "open") return null;
+
+                return (
+                  <SidebarMenuItem key={ticket.id}>
+                    <SidebarMenuButton
+                      render={
+                        <Link href={`/${ticket.id}`} className="truncate">
+                          {ticket.subject}
+                        </Link>
+                      }
+                    />
+                  </SidebarMenuItem>
+                )
+                })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
