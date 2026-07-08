@@ -123,7 +123,7 @@ export function GameSidebar() {
         </SidebarGroup>
         {openTicketIds.length > 0 && (
           <SidebarGroup>
-            <SidebarGroupLabel>Open tickets</SidebarGroupLabel>
+            <SidebarGroupLabel>Tickets</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {openTicketIds.map((ticketId) => (
@@ -139,7 +139,7 @@ export function GameSidebar() {
         )}
         {closedTicketIds.length > 0 && (
           <SidebarGroup>
-            <SidebarGroupLabel>Closed tickets</SidebarGroupLabel>
+            <SidebarGroupLabel>Archive</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {closedTicketIds.map((ticketId) => (
