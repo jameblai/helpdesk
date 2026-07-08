@@ -1,3 +1,10 @@
-export default function Home() {
-  return <p>Hello, world!</p>;
+import { Container } from "@/components/Container";
+import { GameData } from "@/components/GameData";
+
+export default function GamePage() {
+  return (
+    <Container className="py-4">
+      <GameData />
+    </Container>
+  );
 }
