@@ -3,7 +3,7 @@ import { randomId, Id } from "../id";
 
 export const TICKET_DUE_MS = 60_000; // 1 minute
 
-type TicketStatus = "open" | "success" | "failed";
+export type TicketStatus = "open" | "success" | "failed";
 
 export interface TicketJudgement {
   passed: boolean;
@@ -22,8 +22,8 @@ export type Ticket = BareTicket & {
 
   status: TicketStatus;
 
-  createdAt: Date;
-  dueAt: Date;
+  createdAt: number;
+  dueAt: number;
 
   answer?: string;
   judgement?: TicketJudgement;
@@ -51,8 +51,7 @@ export function randomTicket(): Ticket {
   const { subject, body } =
     ticketBank[Math.floor(Math.random() * ticketBank.length)];
 
-  const createdAt = new Date();
-  const dueAt = new Date(createdAt.getTime() + TICKET_DUE_MS);
+  const now = Date.now();
 
   return {
     id,
@@ -60,7 +59,16 @@ export function randomTicket(): Ticket {
     subject,
     body,
     status: "open",
-    createdAt,
-    dueAt,
+    createdAt: now,
+    dueAt: now + TICKET_DUE_MS,
+  };
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function judgeTicket(_ticket: Ticket, _answer: string): TicketJudgement {
+  return {
+    passed: true,
+    score: 100,
+    feedback: "Well done",
   };
 }
