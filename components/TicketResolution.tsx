@@ -15,7 +15,7 @@ function getResolution(ticket: Ticket): {
   if (ticket.status === "failed" && !ticket.judgement) {
     return {
       title: "Ticket Expired",
-      description: "No judgement was provided.",
+      description: "User did not provide an answer within the allotted time.",
       icon: IconClockExclamation,
     };
   }
