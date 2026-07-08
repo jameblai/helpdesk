@@ -7,9 +7,11 @@ import { formatDuration } from "@/lib/format";
 function StatCard({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <Card>
-      <CardContent className="flex flex-col gap-1">
-        <p>{label}</p>
-        <p className="text-2xl font-semibold tabular-nums">{value}</p>
+      <CardContent className="flex flex-col gap-2">
+        <p className="text-muted-foreground leading-none">{label}</p>
+        <p className="text-2xl leading-none font-medium tabular-nums">
+          {value}
+        </p>
       </CardContent>
     </Card>
   );
