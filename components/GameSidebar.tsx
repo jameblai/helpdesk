@@ -15,8 +15,9 @@ import {
 } from "./ui/sidebar";
 import Link from "next/link";
 import { memo } from "react";
-import { IconLifebuoy } from "@tabler/icons-react";
+import { IconBook2, IconLifebuoy } from "@tabler/icons-react";
 import { TicketCountdown } from "./TicketCountdown";
+import { usePathname } from "next/navigation";
 
 const OpenTicketMenuItem = memo(function OpenTicketMenuItem({
   ticketId,
@@ -70,6 +71,7 @@ const ClosedTicketMenuItem = memo(function ClosedTicketMenuItem({
 export function GameSidebar() {
   const openTicketIds = useGame((state) => state.openTicketIds);
   const closedTicketIds = useGame((state) => state.closedTicketIds);
+  const pathname = usePathname();
 
   return (
     <Sidebar>
@@ -83,6 +85,24 @@ export function GameSidebar() {
         </Link>
       </SidebarHeader>
       <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  isActive={pathname === "/manual"}
+                  tooltip="Manual"
+                  render={
+                    <Link href="/manual">
+                      <IconBook2 />
+                      <span>Manual</span>
+                    </Link>
+                  }
+                />
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
         <SidebarGroup>
           <SidebarGroupLabel>Open tickets</SidebarGroupLabel>
           <SidebarGroupContent>

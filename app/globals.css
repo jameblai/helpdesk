@@ -128,3 +128,33 @@
     @apply font-sans;
   }
 }
+
+@layer components {
+  .prose {
+    @apply text-foreground max-w-3xl text-base;
+  }
+
+  .prose h1 {
+    @apply text-foreground mt-0 mb-6 text-3xl leading-none font-semibold tracking-tight;
+  }
+
+  .prose h2 {
+    @apply text-foreground mt-10 mb-4 border-b pb-2 text-2xl font-semibold;
+  }
+
+  .prose h3 {
+    @apply text-foreground mt-8 mb-2 text-lg font-semibold;
+  }
+
+  .prose p {
+    @apply text-foreground/80 my-4;
+  }
+
+  .prose code {
+    @apply bg-muted text-foreground px-1 py-0.5 font-mono text-sm font-medium;
+  }
+
+  .prose a {
+    @apply text-primary underline underline-offset-3;
+  }
+}
