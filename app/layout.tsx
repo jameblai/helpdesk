@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { GameLayout } from "@/components/GameLayout";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 const sans = Geist({
   variable: "--font-sans",
@@ -38,6 +39,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <GameLayout>{children}</GameLayout>
+          <Toaster richColors position="top-right" />
         </ThemeProvider>
       </body>
     </html>

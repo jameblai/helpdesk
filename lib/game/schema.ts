@@ -2,7 +2,7 @@ import z from "zod";
 
 export const judgeTicketInputSchema = z.object({
   ref: z.string().min(1).max(255),
-  answer: z.string().min(1).max(1000),
+  answer: z.string().trim().min(1).max(255),
 });
 
 export type JudgeTicketInput = z.infer<typeof judgeTicketInputSchema>;

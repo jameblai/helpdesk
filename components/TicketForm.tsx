@@ -1,55 +1,92 @@
 "use client";
 
-import { useState } from "react";
+import { useForm } from "@tanstack/react-form";
+import { toast } from "sonner";
+import z from "zod";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useGame } from "@/lib/game";
-import { Ticket } from "@/lib/game/tickets";
+import type { Ticket } from "@/lib/game/tickets";
 import { cn } from "@/lib/utils";
+
+const formSchema = z.object({
+  answer: z.string().trim().min(1).max(255),
+});
 
 export function TicketForm({ ticket }: { ticket: Ticket }) {
   const submitAnswer = useGame((state) => state.submitAnswer);
-  const [answer, setAnswer] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  async function handleSubmit() {
-    if (isSubmitting || ticket.status !== "open") return;
+  const form = useForm({
+    defaultValues: {
+      answer: "",
+    },
+    validators: {
+      onChange: formSchema,
+      onSubmit: formSchema,
+    },
+    onSubmit: async ({ value }) => {
+      if (ticket.status !== "open") {
+        toast.error("This ticket is no longer open.");
+        return;
+      }
 
-    const trimmed = answer.trim();
-    if (!trimmed) return;
-
-    setIsSubmitting(true);
-
-    try {
-      await submitAnswer(ticket.id, answer);
-      setAnswer("");
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
+      try {
+        await submitAnswer(ticket.id, value.answer);
+        form.reset();
+        toast.success("Reply sent.");
+      } catch (error) {
+        toast.error("Could not send reply.", {
+          description:
+            error instanceof Error ? error.message : "Please try again.",
+        });
+      }
+    },
+  });
 
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        handleSubmit();
+        e.stopPropagation();
+        void form.handleSubmit();
       }}
-      className={cn("flex items-center gap-2", isSubmitting && "animate-pulse")}
+      className="flex items-start gap-2"
     >
-      <Input
-        type="text"
-        name="answer"
-        placeholder="Your message..."
-        value={answer}
-        onChange={(e) => setAnswer(e.target.value)}
-        disabled={isSubmitting || ticket.status !== "open"}
-      />
-      <Button
-        type="submit"
-        disabled={isSubmitting || ticket.status !== "open" || !answer.trim()}
+      <form.Field name="answer">
+        {(field) => {
+          return (
+            <div className="min-w-0 flex-1">
+              <Input
+                id={field.name}
+                type="text"
+                name={field.name}
+                placeholder="Your message..."
+                value={field.state.value}
+                onBlur={field.handleBlur}
+                onChange={(e) => field.handleChange(e.target.value)}
+                disabled={ticket.status !== "open"}
+              />
+            </div>
+          );
+        }}
+      </form.Field>
+
+      <form.Subscribe
+        selector={(state) => ({
+          canSubmit: state.canSubmit,
+          isSubmitting: state.isSubmitting,
+        })}
       >
-        Send
-      </Button>
+        {({ canSubmit, isSubmitting }) => (
+          <Button
+            type="submit"
+            className={cn(isSubmitting && "animate-pulse")}
+            disabled={isSubmitting || ticket.status !== "open" || !canSubmit}
+          >
+            {isSubmitting ? "Sending..." : "Send"}
+          </Button>
+        )}
+      </form.Subscribe>
     </form>
   );
 }
