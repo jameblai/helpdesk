@@ -15,6 +15,7 @@ import {
 } from "./ui/sidebar";
 import Link from "next/link";
 import { useMemo } from "react";
+import { IconLifebuoy } from "@tabler/icons-react";
 
 export function GameSidebar() {
   const game = useGame();
@@ -34,8 +35,9 @@ export function GameSidebar() {
       <SidebarHeader className="bg-sidebar p-4">
         <Link
           href="/"
-          className="w-min leading-none font-semibold tracking-tight"
+          className="flex w-min items-center gap-1 leading-none font-semibold tracking-tight"
         >
+          <IconLifebuoy className="size-5" />
           Helpdesk
         </Link>
       </SidebarHeader>
