@@ -1,8 +1,7 @@
 "use client";
-import { AuthorLine } from "@/components/AuthorLine";
+
 import { Container } from "@/components/Container";
-import { TicketData } from "@/components/TicketData";
-import { TicketForm } from "@/components/TicketForm";
+import { TicketView } from "@/components/TicketView";
 import { useGame } from "@/lib/game";
 import { use, useMemo } from "react";
 
@@ -18,18 +17,11 @@ export default function TicketPage({
     [game.tickets, ticketId],
   );
 
-  if (!ticket)
-    return (
-      <Container className="py-4">
-        <p>Not found</p>
-      </Container>
-    );
+  if (!ticket) return null;
 
   return (
     <Container className="py-4">
-      <AuthorLine author={ticket.author} />
-      <TicketData ticket={ticket} />
-      <TicketForm ticket={ticket} />
+      <TicketView ticket={ticket} />
     </Container>
   );
 }
