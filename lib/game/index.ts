@@ -6,7 +6,6 @@ import { TICKET_INTERVAL_MS } from "./constants";
 
 export interface GameStats {
   totalTickets: number;
-  openTickets: number;
   successfulTickets: number;
   failedTickets: number;
   reputation: number;
@@ -73,7 +72,6 @@ function deriveTickets(
     closedTicketIds,
     stats: {
       totalTickets,
-      openTickets: openTicketIds.length,
       successfulTickets,
       failedTickets,
       reputation:
@@ -91,7 +89,6 @@ export const useGame = create<GameState>((set, get) => ({
   closedTicketIds: [],
   stats: {
     totalTickets: 0,
-    openTickets: 0,
     successfulTickets: 0,
     failedTickets: 0,
     reputation: 100,
