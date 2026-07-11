@@ -14,7 +14,6 @@ import {
   SidebarMenuItem,
 } from "./ui/sidebar";
 import Link from "next/link";
-import { memo } from "react";
 import { IconBook2, IconHome, IconLifebuoy } from "@tabler/icons-react";
 import { TicketCountdown } from "./TicketCountdown";
 import { usePathname, useRouter } from "next/navigation";
@@ -51,7 +50,7 @@ function OpenTicketMenuItem({
         render={
           <button
             onClick={() => selectTicket(ticketId)}
-            className="flex w-full items-center justify-between gap-4"
+            className="flex w-full items-center justify-between gap-4 cursor-pointer"
           >
             <span className="truncate">{ticket.subject}</span>
             <TicketCountdown ticket={ticket} showText={false} size={16} />
@@ -80,7 +79,7 @@ function ClosedTicketMenuItem({
         render={
           <button
             onClick={() => selectTicket(ticketId)}
-            className="flex w-full items-center justify-between gap-4"
+            className="flex w-full items-center justify-between gap-4 cursor-pointer"
           >
             <span className="truncate">{ticket.subject}</span>
           </button>
@@ -102,7 +101,7 @@ export function GameSidebar() {
       <SidebarHeader className="bg-sidebar p-4">
         <button
           onClick={() => selectTicket(null)}
-          className="flex w-min items-center gap-1 leading-none font-semibold tracking-tight"
+          className="flex w-min items-center gap-1 leading-none font-semibold tracking-tight cursor-pointer"
         >
           <IconLifebuoy className="size-5" />
           Helpdesk
