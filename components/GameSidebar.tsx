@@ -116,7 +116,7 @@ export function GameSidebar() {
                   isActive={selectedTicketId === null && pathname === "/"}
                   tooltip="Overview"
                   render={
-                    <button onClick={() => selectTicket(null)}>
+                    <button onClick={() => selectTicket(null)} className="cursor-pointer">
                       <IconHome />
                       <span>Overview</span>
                     </button>
