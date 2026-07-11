@@ -31,10 +31,15 @@ export interface GameState {
   ticketIntervalMs: number;
 
   isRunning: boolean;
+
+  selectedTicketId: Id | null;
+
   assignInitialTicket: () => void;
   tick: () => void;
 
   submitAnswer: (ticketId: Id, answer: string) => Promise<void>;
+
+  selectTicket: (ticketId: Id | null) => void;
 }
 
 function deriveTickets(
@@ -101,6 +106,9 @@ export const useGame = create<GameState>((set, get) => ({
   ticketIntervalMs: TICKET_INTERVAL_MS,
 
   isRunning: true,
+
+  selectedTicketId: null,
+
   assignInitialTicket: () => {
     const state = get();
     if (state.ticketIds.length > 0) return;
@@ -211,5 +219,9 @@ export const useGame = create<GameState>((set, get) => ({
       ticketsById,
       ...derivations,
     });
+  },
+
+  selectTicket: (ticketId: Id | null) => {
+    set({ selectedTicketId: ticketId });
   },
 }));

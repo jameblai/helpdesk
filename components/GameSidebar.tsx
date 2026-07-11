@@ -17,15 +17,30 @@ import Link from "next/link";
 import { memo } from "react";
 import { IconBook2, IconHome, IconLifebuoy } from "@tabler/icons-react";
 import { TicketCountdown } from "./TicketCountdown";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { Id } from "@/lib/id";
 
-const OpenTicketMenuItem = memo(function OpenTicketMenuItem({
+function useSelectTicket() {
+  const selectTicket = useGame((state) => state.selectTicket);
+  const router = useRouter();
+  const pathname = usePathname();
+
+  return (ticketId: Id | null) => {
+    selectTicket(ticketId);
+    if (pathname !== "/") {
+      router.push("/");
+    }
+  };
+}
+
+function OpenTicketMenuItem({
   ticketId,
   isActive,
 }: {
   ticketId: string;
   isActive: boolean;
 }) {
+  const selectTicket = useSelectTicket();
   const ticket = useGame((state) => state.ticketsById[ticketId]);
   if (!ticket) return null;
 
@@ -34,26 +49,27 @@ const OpenTicketMenuItem = memo(function OpenTicketMenuItem({
       <SidebarMenuButton
         isActive={isActive}
         render={
-          <Link
-            href={`/${ticket.id}`}
+          <button
+            onClick={() => selectTicket(ticketId)}
             className="flex w-full items-center justify-between gap-4"
           >
             <span className="truncate">{ticket.subject}</span>
             <TicketCountdown ticket={ticket} showText={false} size={16} />
-          </Link>
+          </button>
         }
       />
     </SidebarMenuItem>
   );
-});
+}
 
-const ClosedTicketMenuItem = memo(function ClosedTicketMenuItem({
+function ClosedTicketMenuItem({
   ticketId,
   isActive,
 }: {
   ticketId: string;
   isActive: boolean;
 }) {
+  const selectTicket = useSelectTicket();
   const ticket = useGame((state) => state.ticketsById[ticketId]);
   if (!ticket) return null;
 
@@ -62,33 +78,35 @@ const ClosedTicketMenuItem = memo(function ClosedTicketMenuItem({
       <SidebarMenuButton
         isActive={isActive}
         render={
-          <Link
-            href={`/${ticket.id}`}
+          <button
+            onClick={() => selectTicket(ticketId)}
             className="flex w-full items-center justify-between gap-4"
           >
             <span className="truncate">{ticket.subject}</span>
-          </Link>
+          </button>
         }
       />
     </SidebarMenuItem>
   );
-});
+}
 
 export function GameSidebar() {
+  const selectTicket = useSelectTicket();
   const openTicketIds = useGame((state) => state.openTicketIds);
   const closedTicketIds = useGame((state) => state.closedTicketIds);
   const pathname = usePathname();
+  const selectedTicketId = useGame((state) => state.selectedTicketId);
 
   return (
     <Sidebar>
       <SidebarHeader className="bg-sidebar p-4">
-        <Link
-          href="/"
+        <button
+          onClick={() => selectTicket(null)}
           className="flex w-min items-center gap-1 leading-none font-semibold tracking-tight"
         >
           <IconLifebuoy className="size-5" />
           Helpdesk
-        </Link>
+        </button>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -96,13 +114,13 @@ export function GameSidebar() {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton
-                  isActive={pathname === "/"}
+                  isActive={selectedTicketId === null && pathname === "/"}
                   tooltip="Overview"
                   render={
-                    <Link href="/">
+                    <button onClick={() => selectTicket(null)}>
                       <IconHome />
                       <span>Overview</span>
-                    </Link>
+                    </button>
                   }
                 />
               </SidebarMenuItem>
@@ -130,7 +148,7 @@ export function GameSidebar() {
                   <OpenTicketMenuItem
                     key={ticketId}
                     ticketId={ticketId}
-                    isActive={pathname === `/${ticketId}`}
+                    isActive={selectedTicketId === ticketId && pathname === "/"}
                   />
                 ))}
               </SidebarMenu>
@@ -146,7 +164,7 @@ export function GameSidebar() {
                   <ClosedTicketMenuItem
                     key={ticketId}
                     ticketId={ticketId}
-                    isActive={pathname === `/${ticketId}`}
+                    isActive={selectedTicketId === ticketId && pathname === "/"}
                   />
                 ))}
               </SidebarMenu>
