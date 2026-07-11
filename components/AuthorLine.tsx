@@ -11,6 +11,7 @@ export function AuthorLine({ author }: { author: Author }) {
         width={4000}
         height={4000}
         sizes="40px"
+        priority
       />
       <div className="flex flex-col gap-0.5">
         <p className="leading-none font-medium">{author.name}</p>
